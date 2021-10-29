@@ -5,6 +5,10 @@
 4. Servicios 
 5. Controlador o WEB
 */
+
+/*
+Reporte de status, reporte de fechas y reporte de top clientes.
+*/
 package G6RentCar.RentCar;
 
 import org.springframework.boot.SpringApplication;
