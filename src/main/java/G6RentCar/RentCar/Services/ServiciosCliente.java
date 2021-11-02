@@ -48,6 +48,9 @@ public class ServiciosCliente {
                 if(client.getName()!=null){
                     e.get().setName(client.getName());
                 }
+                if(client.getEmail()!=null){
+                    e.get().setEmail(client.getEmail());
+                }
                 if(client.getAge()!=null){
                     e.get().setAge(client.getAge());
                 }
