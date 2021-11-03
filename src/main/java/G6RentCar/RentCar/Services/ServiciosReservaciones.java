@@ -4,14 +4,17 @@
  */
 package G6RentCar.RentCar.Services;
 
+import G6RentCar.RentCar.Model.Cliente;
 import G6RentCar.RentCar.Model.Reservaciones;
 import G6RentCar.RentCar.Report.ContadorClientes;
 import G6RentCar.RentCar.Report.StatusReservas;
+import G6RentCar.RentCar.Repository.RepositorioCliente;
 import G6RentCar.RentCar.Repository.RepositorioReservaciones;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,8 @@ import org.springframework.stereotype.Service;
 public class ServiciosReservaciones {
     @Autowired
     private RepositorioReservaciones metodosCrud;
-
+    @Autowired
+    private RepositorioCliente cliente;
     public List<Reservaciones> getAll(){
         return metodosCrud.getAll();
     }
@@ -79,31 +83,75 @@ public class ServiciosReservaciones {
         return aBoolean;
     }
     
-    public StatusReservas getReporteStatusReservaciones(){
-        List<Reservaciones>completed=metodosCrud.ReservacionesStatus("completed");
-        List<Reservaciones>cancelled=metodosCrud.ReservacionesStatus("cancelled");
-        return new StatusReservas(completed.size(),cancelled.size());
-    }
-    
-    public List <Reservaciones> getReportesTiempoReservaciones (String datoA, String datoB){
-        SimpleDateFormat parser= new SimpleDateFormat ("yyyy-MM-dd");
-        
-        Date datoUno = new Date();
-        Date datoDos = new Date();
-        
-        try {
-            datoUno= parser.parse(datoA);
-            datoDos= parser.parse(datoB);
-        } catch(ParseException evt){
-            evt.printStackTrace();
-        }if(datoUno.before(datoDos)){
-            return metodosCrud.ReservacionTiempo(datoUno, datoDos);
-        }else{
-            return new ArrayList<>();
+    /**
+     * Método para buscar reservaciones en una selección por fechas
+     * @param from
+     * @param until
+     * @return
+     */
+    public ArrayList<Reservaciones> getByDate(Date from, Date until) {
+
+        List<Reservaciones> reservations = metodosCrud.getAll();
+        ArrayList<Reservaciones> dateReservation = new ArrayList<>();
+        int count = 0;
+
+        for (Reservaciones reservation : reservations) {
+            if(from.compareTo(until) < 0) {
+                if (reservation.getDevolutionDate().compareTo(from) > 0 && reservation.getStartDate().compareTo(until) < 0) {
+                    if ((reservation.getStartDate().compareTo(from) <= 0 || reservation.getStartDate().compareTo(from) >= 0) &&
+                            reservation.getDevolutionDate().compareTo(until) <= 0 || reservation.getDevolutionDate().compareTo(until) >= 0) {
+                        count++;
+                        dateReservation.add(reservation);
+
+                        System.out.println(dateReservation.size());
+                    }
+                }
+            }
         }
+
+        return dateReservation;
     }
-    
-    public List<ContadorClientes> servicioTopClientes(){
-        return metodosCrud.getTopClientes();
+
+    /**
+     * Método para obtener la cantidad de reservas completadas y canceladas
+     * @return
+     */
+    public LinkedHashMap<String, Integer> getVs(){
+        List<Reservaciones> reservations = metodosCrud.getAll();
+        LinkedHashMap<String, Integer> status = new LinkedHashMap<>();
+        int completed = 0;
+        int cancelled = 0;
+        for (Reservaciones reservation : reservations){
+            if ("completed".equals(reservation.getStatus().toLowerCase())){
+                completed++;
+            }else if ("cancelled".equals(reservation.getStatus().toLowerCase())){
+                cancelled++;
+            }
+        }
+        status.put("completed", completed);
+        status.put("cancelled", cancelled);
+        return  status;
+    }
+
+    /**
+     * Método para obtener la cantidad de reservas completadas de un cliente
+     * @return
+     */
+    public List<Object> getClientReport(){
+        List<Cliente> clients = cliente.getAll();
+        LinkedHashMap<String,Object> reportClient = new LinkedHashMap<>();
+        List<Object> countClients = new ArrayList<>();
+        for (Cliente client: clients){
+            Integer total = 0;
+            for (Reservaciones reservation : client.getReservations()) {
+                    total++;
+            }
+            reportClient.put("total", total);
+            reportClient.put("client",client);
+            countClients.add(reportClient.clone());
+            System.out.println(countClients);
+            System.out.println(reportClient);
+        }
+        return countClients;
     }
 }

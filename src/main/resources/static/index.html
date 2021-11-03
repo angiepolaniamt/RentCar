@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script type="text/javascript" src="webjars/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/popup.css">
+    
+    <title>Home</title>
+</head>
+<body>
+    <h1>#MisionTIC 2022</h1>
+    <div class="container unauthenticated">
+        Para iniciar sesion con Github:
+        <a href="/auth2/authorization/github">haz click</a>
+    </div>
+        <div class="container authenticated" style="display:none">
+            Autenticado como: <span id="user"></span>
+        <a href="/auth2/authorization/github">haz click</a>
+    </div>
+    
+    <header class="header">
+        <div>
+            <a href="index.html">
+            <h1 class="text-center title">ALQUILER DE CARROS Grupo6</h1>
+            </a>
+            <nav class="nav">
+                <a href="gama.html">Gamas</a>
+                <a href="carro.html">Carros</a>
+                <a href="cliente.html">Clientes</a>
+                <a href="mensage.html">Mensajes</a>
+                <a href="reservacion.html">Reservaciones</a>
+            </nav>            
+        </div>
+    </header>
+
+    <section class="container seccion">
+        <h2 class="text-center nosotros">Sobre Nosotros</h2>
+        <div class="iconos-nosotros">
+            <div class="icono">
+                <img src="img/icono1.svg" alt="Icono Seguridad">
+                <h3 class="encabezado">Seguridad</h3>
+                <p class="relleno">No se preocupe sus contraseñas están seguras en nuestra página web, jamas serán visibles en la tabla de clientes y durante su ingreso estaran cubiertas por puntos</p>
+            </div>
+        
+            <div class="icono">
+                <img src="img/icono2.svg" alt="Icono Mejor Precio">
+                <h3 class="encabezado">El Mejor Precio</h3>
+                <p class="relleno">Tenemos a su disposición todo tipo de carros, incluidos carros de lujo a bajo precio</p>
+            </div>
+        
+            <div class="icono">
+                <img src="img/icono3.svg" alt="Icono A Tiempo">
+                <h3 class="encabezado">A Tiempo</h3>
+                <p class="relleno">Entregamos su carro alquilado a tiempo en cualquiera de nuestras oficinas, así mismo asegurese de regresarlo a tiempo</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-cars">
+        <div class="container contenido-contacto">
+            <h2 class="nosotros">Encuentra el vehículo deseado</h2>
+            <p class="relleno">Encuentre el vehiculo deseado en cualquiera de nuestras oficionas o visitando nuestro sitio web</p>
+            <a href="carro.html" class="boton boton-amarillo">Carros</a>
+        </div>
+    </section>
+
+    <footer class="copyright">
+        <div class="container contenedor-footer">
+            <nav class="nav-footer">
+                <a href="#">Nosotros</a>
+                <a href="#">Anuncios</a>
+                <a href="#">Blog</a>
+                <a href="#">Contacto</a>
+            </nav>
+            <p class="copyright">Todos los Derechos Reservados 2021 &copy;</p>
+        </div>
+    </footer>
+</body>
+</html>

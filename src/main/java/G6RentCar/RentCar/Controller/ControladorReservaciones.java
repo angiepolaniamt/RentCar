@@ -8,6 +8,10 @@ import G6RentCar.RentCar.Model.Reservaciones;
 import G6RentCar.RentCar.Report.ContadorClientes;
 import G6RentCar.RentCar.Report.StatusReservas;
 import G6RentCar.RentCar.Services.ServiciosReservaciones;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,18 +69,41 @@ public class ControladorReservaciones {
         return servicio.deleteReservation(reservationId);
     }
 
-    @GetMapping("/report-status")
-    public StatusReservas getReservas() {
-        return servicio.getReporteStatusReservaciones();
+    /**
+     * Método para obtener todas las reservaciones en una fecha específica
+     *
+     * @return
+     */
+    @GetMapping("report-dates/{from}/{to}")
+    public List<Reservaciones> getByDate(@PathVariable("from") String sFrom, @PathVariable("to") String sTo){
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        Date from = null;
+        Date to = null;
+        try {
+            from = formato.parse(sFrom);
+            to = formato.parse(sTo);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return servicio.getByDate(from, to);
     }
 
-    @GetMapping("/report-dates/{dateOne}/{dateTwo}")
-    public List<Reservaciones> getReservasTiempo(@PathVariable("dateOne") String dateOne, @PathVariable("dateTwo") String dateTwo) {
-        return servicio.getReportesTiempoReservaciones(dateOne, dateTwo);
+    /**
+     * Método para obtener el conteo las reservas completas de cada cliente
+     * @return
+     */
+    @GetMapping("report-clients")
+    public List<Object> getClientReport(){
+        return servicio.getClientReport();
     }
-    
-    @GetMapping("/report-clients")
-    public List<ContadorClientes> getClientes(){
-        return servicio.servicioTopClientes();
+
+    /**
+     * Método para obtener el mapeo para retornar el conteo de reservas completas vs canceladas
+     * @return
+     */
+    @GetMapping("report-status")
+    public LinkedHashMap<String, Integer> getVs(){
+        return servicio.getVs();
     }
 }
